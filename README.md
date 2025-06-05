@@ -1,141 +1,124 @@
 # Airbnb Clone Project
 
-## Overview
-The Airbnb Clone Project is a full-stack application designed to simulate a real-world booking platform like Airbnb. The primary focus of this project is backend development, including robust API creation, database modeling, and deployment automation. This project enhances collaboration, security, and system design skills essential for building scalable applications.
+## 🧭 Project Overview
+The **Airbnb Clone Project** is a full-stack web application that replicates core features of the Airbnb platform. It is designed for learners to gain practical experience with backend development, API design, database modeling, CI/CD workflows, and secure application deployment.
 
-### Project Goals
-- Build a scalable booking system.
-- Practice full-stack collaboration using GitHub workflows.
-- Implement secure APIs and efficient CI/CD pipelines.
-- Integrate Django, MySQL, and GraphQL in a unified backend stack.
-
----
-
-## Team Roles
-
-### Backend Developer
-Responsible for building and maintaining server-side application logic using Django. This includes implementing business rules, handling API endpoints, and ensuring optimal performance.
-
-### Database Administrator (DBA)
-Designs, implements, and maintains the database system. Focuses on data integrity, indexing, backup strategies, and performance tuning.
-
-### DevOps Engineer
-Implements CI/CD pipelines and manages infrastructure automation using tools like GitHub Actions and Docker. Ensures seamless code deployment and monitoring.
-
-### QA Engineer
-Writes and executes test cases to ensure the application works as expected. Also implements automated tests and performs regression testing.
-
-### Project Manager
-Oversees project timelines, facilitates team collaboration, and ensures milestones are achieved according to plan.
+### 🎯 Project Goals
+- Understand backend system design and architecture.
+- Implement secure and scalable RESTful and GraphQL APIs.
+- Learn collaborative software development using GitHub.
+- Build a functional database schema using MySQL.
+- Set up and manage CI/CD pipelines for automated deployment.
+- Apply modern DevOps tools (Docker, GitHub Actions).
 
 ---
 
-## Technology Stack
+## 👥 Team Roles
 
-- **Django**: Web framework for rapid development of secure and scalable APIs.
-- **MySQL**: Relational database management system to store and query structured data.
-- **GraphQL**: API query language to fetch precise data and reduce over-fetching/under-fetching issues.
-- **Docker**: Containerization platform for environment consistency across development and production.
-- **GitHub Actions**: CI/CD tool to automate testing, builds, and deployments.
-- **Markdown**: For documentation and collaborative editing of README files and wiki pages.
+| Role | Description |
+|------|-------------|
+| **Backend Developer** | Builds the business logic and API endpoints using Django. |
+| **Database Administrator (DBA)** | Designs and manages the MySQL schema, ensures data integrity and performance. |
+| **DevOps Engineer** | Sets up CI/CD pipelines, manages Docker containers and deployment environments. |
+| **Project Manager** | Oversees task distribution, timelines, and documentation efforts. |
+| **Security Engineer** | Implements security best practices including API protection, authentication, and data encryption. |
 
 ---
 
-## Database Design
+## 🧰 Technology Stack
 
-### Key Entities
+| Technology | Purpose |
+|------------|---------|
+| **Django** | A high-level Python framework for building secure, scalable backends. |
+| **MySQL** | Relational database system for storing users, listings, bookings, and reviews. |
+| **GraphQL** | API query language used for flexible and efficient data fetching. |
+| **Docker** | Containerizes the application for consistent deployment across environments. |
+| **GitHub Actions** | Automates CI/CD workflows for testing, building, and deploying the application. |
 
-#### User
-- `id`
-- `username`
+---
+
+## 🧱 Database Design
+
+### Entities and Fields
+
+#### 1. **User**
+- `user_id` (Primary Key)
 - `email`
 - `password_hash`
+- `full_name`
 - `date_joined`
 
-#### Property
-- `id`
-- `host_id` (FK to User)
+#### 2. **Property**
+- `property_id` (Primary Key)
+- `owner_id` (Foreign Key → User)
 - `title`
 - `description`
 - `location`
+- `price_per_night`
 
-#### Booking
-- `id`
-- `user_id` (FK to User)
-- `property_id` (FK to Property)
-- `start_date`
-- `end_date`
+#### 3. **Booking**
+- `booking_id` (Primary Key)
+- `user_id` (Foreign Key → User)
+- `property_id` (Foreign Key → Property)
+- `check_in_date`
+- `check_out_date`
+- `total_price`
 
-#### Review
-- `id`
-- `user_id` (FK to User)
-- `property_id` (FK to Property)
-- `rating`
+#### 4. **Review**
+- `review_id` (Primary Key)
+- `booking_id` (Foreign Key → Booking)
+- `rating` (1–5)
 - `comment`
+- `review_date`
 
-#### Payment
-- `id`
-- `booking_id` (FK to Booking)
+#### 5. **Payment**
+- `payment_id` (Primary Key)
+- `booking_id` (Foreign Key → Booking)
 - `amount`
 - `payment_method`
-- `status`
+- `payment_status`
 
 ### Relationships
-- A **user** can host multiple **properties**.
-- A **booking** is associated with one **user** and one **property**.
-- **Reviews** are linked to both **users** and **properties**.
-- Each **booking** can have one **payment** record.
+- A **User** can have many **Bookings** and many **Properties**.
+- A **Property** can have many **Bookings**.
+- A **Booking** has one **Payment** and may have one **Review**.
 
 ---
 
-## Feature Breakdown
+## 🚀 Feature Breakdown
 
-### User Management
-Handles user registration, authentication, profile editing, and account settings. Crucial for personalized booking and property management.
-
-### Property Management
-Allows users to list, edit, and delete properties. Includes image uploads, location tagging, and availability settings.
-
-### Booking System
-Enables users to search, view, and book available properties for specific dates. Ensures date conflict validation and confirmation messaging.
-
-### Review System
-Permits users to leave ratings and comments for properties after their stay. Helps build credibility and improve property visibility.
-
-### Payment Processing
-Handles secure transactions, stores payment statuses, and integrates with payment gateways. Ensures transaction integrity.
+- **User Registration & Login** (with authentication)
+- **Property Listing Management** (create, update, delete listings)
+- **Search & Filtering** for available properties
+- **Booking System** (select dates, calculate price)
+- **Review System** (submit and view feedback)
+- **Payment Integration** (mock or real gateway support)
+- **Admin Dashboard** (for managing users and listings)
 
 ---
 
-## API Security
+## 🔐 API Security
 
-### Authentication
-Implemented using token-based authentication (e.g., JWT). Ensures only authorized users can access protected endpoints.
-
-### Authorization
-Controls user access based on roles (e.g., guest, host, admin). Prevents unauthorized actions on resources.
-
-### Rate Limiting
-Prevents API abuse and brute-force attacks by limiting the number of requests per user/IP.
-
-### Data Validation & Input Sanitization
-Avoids SQL injection and XSS attacks by strictly validating incoming data.
-
-### Secure Communication
-Uses HTTPS to encrypt data in transit, protecting against man-in-the-middle attacks.
+- **Authentication**: Uses token-based auth (JWT) for secure access.
+- **Authorization**: Role-based permissions to restrict access to sensitive actions.
+- **Rate Limiting**: Prevents abuse by limiting API calls per user/IP.
+- **Input Validation & Sanitization**: Protects against SQL injection and XSS.
+- **HTTPS/TLS**: Ensures encrypted data transmission.
 
 ---
 
-## CI/CD Pipeline
+## 🔄 CI/CD Pipeline
 
 ### What is CI/CD?
-CI/CD (Continuous Integration/Continuous Deployment) automates the process of integrating code, running tests, and deploying updates to the application. It helps identify issues early, speeds up development, and ensures code quality.
+CI/CD stands for **Continuous Integration** and **Continuous Deployment**. It is a set of practices that enable teams to deliver code changes more frequently and reliably.
+
+### Benefits
+- Speeds up the release cycle.
+- Automatically runs tests on every push or pull request.
+- Reduces manual errors in the deployment process.
+- Ensures consistent deployment environments.
 
 ### Tools Used
-- **GitHub Actions**: Automates workflows like testing and deployment.
-- **Docker**: Standardizes application environments across development and production.
-- **pytest / unittest**: Runs automated test cases during integration.
-- **Heroku / AWS / DigitalOcean** *(optional)*: For hosting the deployed application.
-
----
-
+- **GitHub Actions**: Automates testing, building, and deploying the app.
+- **Docker**: Creates a consistent development and production environment.
+- **Shell Scripts**: Used to automate database migrations and service restarts.
